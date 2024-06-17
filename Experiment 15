@@ -1,0 +1,432 @@
+Algorithm:
+
+QUICK SORT:
+
+Step 1 : Start. 
+
+Step 2 : If LEFT < RIGHT then Goto 
+
+Step 3 else Goto Step 23. Step 3 : Set PIVOT = LEFT.
+
+ Step 4 : Set I = LEFT + 1. 
+
+Step 5 : Set J = RIGHT.
+
+ Step 6 : Repeat While I < J.
+
+ Step 7 : Repeat While A[I] < A[PIVOT].
+
+ Step 8 : Increment I by 1. 
+
+Step 9 : [End of Step 7 While loop]. 
+
+Step 10 : Repeat While A[J] > A[PIVOT]. 
+
+Step 11 : Decrement J by 1. 
+
+Step 12 : [End of Step 10 While loop].
+
+ Step 13 : If I < J then Goto Step 14 else Goto Step 17.
+
+ Step 14 : Set TEMP = A[I]. 
+
+Step 15 : Set A[I] = A[J].
+
+ Step 16 : Set A[J] = TEMP. 
+
+Step 17 : [End of Step 6 While loop].
+
+ Step 18 : Set TEMP = A[PIVOT]. 
+
+Step 19 : Set A[PIVOT] = A[J]. 
+
+Step 20 : Set A[J] = TEMP. 
+
+Step 21 : QUICKSORT(LEFT, J – 1), 
+
+Step 22 : QUICKSORT(J + 1, RIGHT).
+
+ Step 23 : Stop.
+
+
+
+
+
+MERGE SORT:
+
+Step 1 : Start.
+
+ Step 2 : Set N1 = CENTER - LEFT + 1.
+
+ Step 3 : Set N2 = RIGHT - CENTER. 
+
+Step 4 : Repeat For I = 0 to N1 - 1. 
+
+Step 5 : Set A[I] = ARR[LEFT + I]. 
+
+Step 6 : Increment I by 1. 
+
+Step 7 : [End of Step 4 For loop]. 
+
+Step 8 : Repeat For J = 0 to N2 - 1. 
+
+Step 9 : Set B[J] = ARR[CENTER + 1 + J].
+
+ Step 10 : Increment J by 1. 
+
+Step 11 : [End of Step 8 For loop]. 
+
+Step 12 : Repeat While APTR < N1 AND BPTR < N2.
+
+ Step 13 : If A[APTR]<= B[BPTR] then Goto Step 14 else Goto Step 18.
+
+ Step 14 : Set ARR[CPTR] = A[APTR].
+
+ Step 15 : Increment APTR by 1 and Goto Step 19. 
+
+Step 16 : Set ARR[CPTR] = B[BPTR]. 
+
+Step 17 : Increment BPTR by 1. 
+
+Step 18 : Increment CPTR by 1.
+
+ Step 19 : [End of Step 12 While loop]. 
+
+Step 20 : Repeat While APTR < N1.
+
+ Step 21 : Set ARR[CPTR] = A[APTR].
+
+ Step 22 : Increment APTR by 1.
+
+ Step 23 : Increment CPTR by 1.
+
+Step 24 : [End of Step 20 While loop]. 
+
+Step 25 : Repeat While BPTR < N2. 
+
+Step 26 : Set ARR[CPTR] = B[BPTR]. 
+
+Step 27 : Increment BPTR by 1. 
+
+Step 28 : Increment CPTR by 1. 
+
+Step 29 : [End of Step 25 While loop].
+
+ Step 30 : Stop.
+
+
+
+
+
+PROGRAM:
+
+QUICK SORT:
+
+#include <stdio.h> 
+
+
+
+void swap(int* a, int* b) 
+
+{ 
+
+	int temp = *a; 
+
+	*a = *b; 
+
+	*b = temp; 
+
+} 
+
+
+
+int partition(int arr[], int low, int high) 
+
+{ 
+
+
+
+	
+
+	int pivot = arr[low]; 
+
+	int i = low; 
+
+	int j = high; 
+
+
+
+	while (i < j) { 
+
+
+
+		
+
+) 
+
+		while (arr[i] <= pivot && i <= high - 1) { 
+
+			i++; 
+
+		} 
+
+
+
+		
+
+		while (arr[j] > pivot && j >= low + 1) { 
+
+			j--; 
+
+		} 
+
+		if (i < j) { 
+
+			swap(&arr[i], &arr[j]); 
+
+		} 
+
+	} 
+
+	swap(&arr[low], &arr[j]); 
+
+	return j; 
+
+} 
+
+
+
+void quickSort(int arr[], int low, int high) 
+
+{ 
+
+	if (low < high) { 
+
+
+
+		
+
+		int partitionIndex = partition(arr, low, high); 
+
+
+
+		
+
+		quickSort(arr, low, partitionIndex - 1); 
+
+		quickSort(arr, partitionIndex + 1, high); 
+
+	} 
+
+} 
+
+
+
+int main() 
+
+{ 
+
+	int arr[] = { 19, 17, 15, 12, 16, 18, 4, 11, 13 }; 
+
+	int n = sizeof(arr) / sizeof(arr[0]); 
+
+
+
+	
+
+	printf("Original array: "); 
+
+	for (int i = 0; i < n; i++) { 
+
+		printf("%d ", arr[i]); 
+
+	} 
+
+
+
+	
+
+	quickSort(arr, 0, n - 1); 
+
+
+
+	
+
+	printf("\nSorted array: "); 
+
+	for (int i = 0; i < n; i++) { 
+
+		printf("%d ", arr[i]); 
+
+	} 
+
+
+
+	return 0; 
+
+}
+
+MERGE SORT:
+
+#include <stdio.h> 
+
+#include <stdlib.h> 
+
+
+
+void merge(int arr[], int l, int m, int r) 
+
+{ 
+
+	int i, j, k; 
+
+	int n1 = m - l + 1; 
+
+	int n2 = r - m; 
+
+
+
+	
+
+	int L[n1], R[n2]; 
+
+
+
+	
+
+	for (i = 0; i < n1; i++) 
+
+		L[i] = arr[l + i]; 
+
+	for (j = 0; j < n2; j++) 
+
+		R[j] = arr[m + 1 + j]; 
+
+
+
+	
+
+	i = 0; 
+
+             j = 0; 
+
+
+
+	
+
+	k = l; 
+
+	while (i < n1 && j < n2) { 
+
+		if (L[i] <= R[j]) { 
+
+			arr[k] = L[i]; 
+
+			i++; 
+
+		} 
+
+		else { 
+
+			arr[k] = R[j]; 
+
+			j++; 
+
+		} 
+
+		k++; 
+
+	} 
+
+while (i < n1) { 
+
+		arr[k] = L[i]; 
+
+		i++; 
+
+		k++; 
+
+	} 
+
+while (j < n2) { 
+
+		arr[k] = R[j]; 
+
+		j++; 
+
+		k++; 
+
+	} 
+
+} 
+
+
+
+void mergeSort(int arr[], int l, int r) 
+
+{ 
+
+	if (l < r) { 
+
+		
+
+		int m = l + (r - l) / 2; 
+
+                        mergeSort(arr, l, m); 
+
+		mergeSort(arr, m + 1, r); 
+
+
+
+		merge(arr, l, m, r); 
+
+	} 
+
+} 
+
+
+
+void printArray(int A[], int size) 
+
+{ 
+
+	int i; 
+
+	for (i = 0; i < size; i++) 
+
+		printf("%d ", A[i]); 
+
+	printf("\n"); 
+
+} 
+
+
+
+int main() 
+
+{ 
+
+	int arr[] = { 12, 11, 13, 5, 6, 7 }; 
+
+	int arr_size = sizeof(arr) / sizeof(arr[0]); 
+
+
+
+	printf("Given array is \n"); 
+
+	printArray(arr, arr_size); 
+
+
+
+	mergeSort(arr, 0, arr_size - 1); 
+
+
+
+	printf("\nSorted array is \n"); 
+
+	printArray(arr, arr_size); 
+
+	return 0; 
+
+}
+
