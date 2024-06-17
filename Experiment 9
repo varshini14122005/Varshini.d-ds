@@ -1,0 +1,360 @@
+ALGORITHM:
+
+Step1:start
+
+Step 2:Create a Node structure with:int data ,Node* left ,Node* right
+
+Step 3:Define a BST structure with: Node* root
+
+Step 4:Define a function Node* createNode(int data):,Allocate memory for a new node using malloc.,Set the data field,Initialize left and right pointers to NULL.,Return the new node.
+
+Step 5:Define a function Node* insertNode(Node* root, int data):If root is NULL, create and return a new node,If data is less than root->data, recursively insert in the left subtree,If data is greater than root->data, recursively insert in the right subtree.,Return the root
+
+Step 6:Define a function Node* searchNode(Node* root, int data):If root is NULL or root->data is data, return root.,If data is less than root->data, recursively search in the left subtree.,If data is greater than root->data, recursively search in the right subtree.,Return the result.
+
+Step 7:Define a function Node* findMin(Node* root):Traverse the left subtree until left is NULL.,Return the node.
+
+Step 8:Define a function Node* deleteNode(Node* root, int data):If root is NULL, return root.,If data is less than root->data, recursively delete in the left subtree.,If data is greater than root->data, recursively delete in the right subtree.,If data is equal to root->data:,If the node has no children, return NULL.,If the node has one child, return the non-NULL child.,If the node has two children:,Find the minimum node in the right subtree.,Replace root->data with the minimum node's data.,Recursively delete the minimum node in the right subtree.,Return the root.
+
+Step9:stop
+
+
+
+
+
+
+
+
+
+
+
+PROGRAM:
+
+#include <stdio.h>
+
+#include <stdlib.h>
+
+ 
+
+struct BinaryTreeNode {
+
+    int key;
+
+    struct BinaryTreeNode *left, *right;
+
+};
+
+ 
+
+struct BinaryTreeNode* newNodeCreate(int value)
+
+{
+
+    struct BinaryTreeNode* temp
+
+        = (struct BinaryTreeNode*)malloc(
+
+            sizeof(struct BinaryTreeNode));
+
+    temp->key = value;
+
+    temp->left = temp->right = NULL;
+
+    return temp;
+
+}
+
+ 
+
+struct BinaryTreeNode*
+
+searchNode(struct BinaryTreeNode* root, int target)
+
+{
+
+    if (root == NULL || root->key == target) {
+
+        return root;
+
+    }
+
+    if (root->key < target) {
+
+        return searchNode(root->right, target);
+
+    }
+
+    return searchNode(root->left, target);
+
+}
+
+ 
+
+
+
+struct BinaryTreeNode*
+
+insertNode(struct BinaryTreeNode* node, int value)
+
+{
+
+    if (node == NULL) {
+
+        return newNodeCreate(value);
+
+    }
+
+    if (value < node->key) {
+
+        node->left = insertNode(node->left, value);
+
+    }
+
+    else if (value > node->key) {
+
+        node->right = insertNode(node->right, value);
+
+    }
+
+    return node;
+
+}
+
+ 
+
+void postOrder(struct BinaryTreeNode* root)
+
+{
+
+    if (root != NULL) {
+
+        postOrder(root->left);
+
+        postOrder(root->right);
+
+        printf(" %d ", root->key);
+
+    }
+
+}
+
+ 
+
+void inOrder(struct BinaryTreeNode* root)
+
+{
+
+    if (root != NULL) {
+
+        inOrder(root->left);
+
+        printf(" %d ", root->key);
+
+        inOrder(root->right);
+
+    }
+
+}
+
+ 
+
+void preOrder(struct BinaryTreeNode* root)
+
+{
+
+    if (root != NULL) {
+
+        printf(" %d ", root->key);
+
+        preOrder(root->left);
+
+        preOrder(root->right);
+
+    }
+
+}
+
+ 
+
+struct BinaryTreeNode* findMin(struct BinaryTreeNode* root)
+
+{
+
+    if (root == NULL) {
+
+        return NULL;
+
+    }
+
+    else if (root->left != NULL) {
+
+        return findMin(root->left);
+
+    }
+
+    return root;
+
+}
+
+ 
+
+struct BinaryTreeNode* delete (struct BinaryTreeNode* root,
+
+                               int x)
+
+{
+
+    if (root == NULL)
+
+        return NULL;
+
+ 
+
+    if (x > root->key) {
+
+        root->right = delete (root->right, x);
+
+    }
+
+    else if (x < root->key) {
+
+        root->left = delete (root->left, x);
+
+    }
+
+    else {
+
+        if (root->left == NULL && root->right == NULL) {
+
+            free(root);
+
+            return NULL;
+
+        }
+
+        else if (root->left == NULL
+
+                 || root->right == NULL) {
+
+            struct BinaryTreeNode* temp;
+
+            if (root->left == NULL) {
+
+                temp = root->right;
+
+            }
+
+            else {
+
+                temp = root->left;
+
+            }
+
+            free(root);
+
+            return temp;
+
+        }
+
+        else {
+
+            struct BinaryTreeNode* temp
+
+                = findMin(root->right);
+
+            root->key = temp->key;
+
+            root->right = delete (root->right, temp->key);
+
+        }
+
+    }
+
+    return root;
+
+}
+
+ 
+
+int main()
+
+{
+
+    
+
+    struct BinaryTreeNode* root = NULL;
+
+ 
+
+    root = insertNode(root, 50);
+
+    insertNode(root, 30);
+
+    insertNode(root, 20);
+
+    insertNode(root, 40);
+
+    insertNode(root, 70);
+
+    insertNode(root, 60);
+
+    insertNode(root, 80);
+
+ 
+
+    if (searchNode(root, 60) != NULL) {
+
+        printf("60 found");
+
+    }
+
+    else {
+
+        printf("60 not found");
+
+    }
+
+ 
+
+    printf("\n");
+
+ 
+
+    
+
+    postOrder(root);
+
+    printf("\n");
+
+ 
+
+    
+
+    preOrder(root);
+
+    printf("\n");
+
+ 
+
+    inOrder(root);
+
+    printf("\n");
+
+ 
+
+    
+
+    struct BinaryTreeNode* temp = delete (root, 70);
+
+    printf("After Delete: \n");
+
+    inOrder(root);
+
+ 
+
+    
+
+    return 0;
+
+}
+
